@@ -1,0 +1,42 @@
+clear;
+clc;
+%The pole and zero values are entered below
+alf = [-0.2958923812,-0.1727898768,-0.0614176928];
+beta =[0.2052104670,0.7026214258,0.9888436814];
+Ca = 15.005553499;
+w0 = 2*pi*sqrt(5700*6300);
+dw = 2*pi*600;
+QBP = w0/dw;
+s = tf('s');
+%Determining the cascade parameters
+for i = 1:1:length(alf)
+C(i) = alf(i)^2 + beta(i)^2;
+D(i) = abs(2*alf(i)/QBP);
+E(i) = C(i)/(QBP^2) + 4;
+G(i) = sqrt(E(i)^2 - 4*D(i)^2);
+Q(i) = sqrt((E(i) + G(i))/(2*D(i)^2));
+M(i) = abs(alf(i)*Q(i)/QBP);
+W(i) = M(i) + sqrt(M(i)^2 - 1);
+end
+for i = 1:1:length(alf)
+wbp1(i) = w0 * W(i);
+wbp2(i) = w0 / W(i);
+end
+for i = 1:1:length(alf)
+AR1(i) = sqrt(1 + Q(i)^2 * (w0/wbp1(i) - wbp1(i)/w0)^2);
+AR2(i) = sqrt(1 + Q(i)^2 * (w0/wbp2(i) - wbp2(i)/w0)^2);
+end
+%Determining the component values
+cap = 10e-9;
+for i = 1:1:length(alf)
+LL1(i) = 1/(wbp1(i)^2*cap);
+LL2(i) = 1/(wbp2(i)^2*cap);
+RR1(i) = Q(i)/sqrt(cap/LL1(i));
+RR2(i) = Q(i)/sqrt(cap/LL2(i));
+end
+for i = 1:1:length(alf)
+R11(i) = LL1(i)*wbp1(i);
+R12(i) = LL2(i)*wbp2(i);
+R31(i) = 1/(cap*wbp1(i));
+R32(i) = 1/(cap*wbp2(i));
+end
