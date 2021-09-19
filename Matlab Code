@@ -1,11 +1,11 @@
 clear;
 clc;
 %The pole and zero values are entered below
-alf = [-0.2958923812,-0.1727898768,-0.0614176928];
-beta =[0.2052104670,0.7026214258,0.9888436814];
-Ca = 15.005553499;
-w0 = 2*pi*sqrt(5700*6300);
-dw = 2*pi*600;
+alf = [-0.2958923812,-0.1727898768,-0.0614176928];  % α values
+beta =[0.2052104670,0.7026214258,0.9888436814];     % β values
+Ca = 15.005553499;         % Gain coefficient (Ca)
+w0 = 2*pi*sqrt(5700*6300); % Center frequency (6000) ± 1/2 bandwidth
+dw = 2*pi*600;             % Insert bandwidth (600 in this case)
 QBP = w0/dw;
 s = tf('s');
 %Determining the cascade parameters
